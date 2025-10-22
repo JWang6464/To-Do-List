@@ -30,6 +30,9 @@
         <form action="{{ url_for('main.remove_task', task_id=task['id']) }}" method="POST" style="display:inline">
           <button type="submit" class="remove-link">Remove</button>
         </form>
+        <form action="{{ url_for('main.edit_task', task_id=task['id']) }}" method="get" style="display:inline">
+          <button type="submit" class="edit-link">Edit</button>
+        </form>
       </li>
       {% endfor %}
     </ul>

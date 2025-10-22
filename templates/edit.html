@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h3>Edit Task</h3>
+    <form method="POST">
+      <div class="input-section">
+        <input type="text" name="task-text" value="{{ task['text'] }}" />
+        <select name="task-priority" class="priority-select">
+          <option value="low" {{ 'selected' if task.get('priority', 'low') == 'low' else '' }}>Low</option>
+          <option value="medium" {{ 'selected' if task.get('priority') == 'medium' else '' }}>Medium</option>
+          <option value="high" {{ 'selected' if task.get('priority') == 'high' else '' }}>High</option>
+        </select>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+
+    <p><a href="{{ url_for('main.todo') }}">Back to list</a></p>
+  </div>
+</body>
+</html>

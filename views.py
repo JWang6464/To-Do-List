@@ -6,12 +6,7 @@ main_blueprint = Blueprint('main', __name__)
 
 # simple in-memory tasks store
 # store Task instances converted to dicts when rendering
-TASKS = [
-    Task(id=1, text='Learn HTML, CSS, and JavaScript.').to_dict(),
-    Task(id=2, text='Learn Flask.').to_dict(),
-    Task(id=3, text='Build a to-do app.').to_dict(),
-]
-
+TASKS = []
 
 def _next_id():
     return max((t['id'] for t in TASKS), default=0) + 1
@@ -38,3 +33,25 @@ def remove_task(task_id):
     global TASKS
     TASKS = [t for t in TASKS if t['id'] != task_id]
     return redirect(url_for('main.todo'))
+
+
+@main_blueprint.route('/edit/<int:task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    # find the task
+    task = next((t for t in TASKS if t['id'] == task_id), None)
+    if not task:
+        return redirect(url_for('main.todo'))
+
+    if request.method == 'POST':
+        text = request.form.get('task-text', '').strip()
+        priority = request.form.get('task-priority', 'low').strip().lower()
+        if priority not in ('low', 'medium', 'high'):
+            priority = 'low'
+
+        if text:
+            # update in-place
+            task['text'] = text
+            task['priority'] = priority
+        return redirect(url_for('main.todo'))
+
+    return render_template('edit.html', task=task)

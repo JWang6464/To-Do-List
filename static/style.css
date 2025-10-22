@@ -81,6 +81,17 @@ body {
       color: #cc0000;
     }
 
+    .edit-link {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .edit-link:hover { background: #0069d9 }
+
   /* Priority styles */
   .priority-high {
     border-left: 6px solid #e74c3c; /* red */
