@@ -9,17 +9,23 @@
 <body>
   <div class="container">
     <h3>To-Do List</h3>
-    <form  method="POST">
-        <div class="input-section">
-        <input type="text" id="new-task" name="task-text" placeholder="Add a new task..." />
-        <button id="add-task-btn">Add Task</button>
-        </div>
-    </form>
+  <form  method="POST">
+    <div class="input-section">
+    <input type="text" id="new-task" name="task-text" placeholder="Add a new task..." />
+    <select name="task-priority" id="task-priority" class="priority-select">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <button id="add-task-btn">Add Task</button>
+    </div>
+  </form>
     
     <ul id="task-list">
       {% for task in tasks %}
-      <li class="{{ 'completed' if task.get('completed') else '' }}">
+      <li class="{{ 'completed' if task.get('completed') else '' }} {{ 'priority-' + (task.get('priority')|default('low')) }}">
         <span class="task-text">{{ task['text'] }}</span>
+        <span class="priority-indicator">{{ task.get('priority')|default('low')|capitalize }}</span>
 
         <form action="{{ url_for('main.remove_task', task_id=task['id']) }}" method="POST" style="display:inline">
           <button type="submit" class="remove-link">Remove</button>

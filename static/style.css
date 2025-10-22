@@ -80,3 +80,33 @@ body {
     .remove-link:hover {
       color: #cc0000;
     }
+
+  /* Priority styles */
+  .priority-high {
+    border-left: 6px solid #e74c3c; /* red */
+    background-color: #fff6f6;
+  }
+  .priority-medium {
+    border-left: 6px solid #f1c40f; /* yellow */
+    background-color: #fffdf6;
+  }
+  .priority-low {
+    border-left: 6px solid #2ecc71; /* green */
+    background-color: #f6fff8;
+  }
+
+  .priority-indicator {
+    font-size: 0.8em;
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin-left: 10px;
+    text-transform: capitalize;
+    background: rgba(0,0,0,0.05);
+  }
+
+  .priority-select {
+    margin-left: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
