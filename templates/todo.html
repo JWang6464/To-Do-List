@@ -9,35 +9,52 @@
 <body>
   <div class="container">
     <h3>To-Do List</h3>
-  <form  method="POST">
-    <div class="input-section">
-    <input type="text" id="new-task" name="task-text" placeholder="Add a new task..." />
-    <select name="task-priority" id="task-priority" class="priority-select">
-      <option value="low">Low</option>
-      <option value="medium">Medium</option>
-      <option value="high">High</option>
-    </select>
-    <button id="add-task-btn">Add Task</button>
-    </div>
-  </form>
-    
+
+    <!-- add task -->
+    <form method="POST">
+      <div class="input-section">
+        <input type="text" id="new-task" name="task-text" placeholder="Add a new task..." required />
+        <select name="priority" aria-label="Priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>        
+        <button type="submit" id="add-task-btn">Add Task</button>
+      </div>
+    </form>
+
+    <!-- list -->
     <ul id="task-list">
       {% for task in tasks %}
-      <li class="{{ 'completed' if task.get('completed') else '' }} {{ 'priority-' + (task.get('priority')|default('low')) }}">
-        <span class="task-text">{{ task['text'] }}</span>
-        <span class="priority-indicator">{{ task.get('priority')|default('low')|capitalize }}</span>
-
-        <form action="{{ url_for('main.remove_task', task_id=task['id']) }}" method="POST" style="display:inline">
-          <button type="submit" class="remove-link">Remove</button>
-        </form>
-        <form action="{{ url_for('main.edit_task', task_id=task['id']) }}" method="get" style="display:inline">
-          <button type="submit" class="edit-link">Edit</button>
-        </form>
-      </li>
+        <li class="{{ task.status }}">
+          <div class="li-left">
+            <!-- dot shows priority -->
+            <span class="prio-dot {{ task.priority }}" title="{{ task.priority }}"></span>
+            <a href="{{ url_for('main.check', task_id=task.id) }}">{{ task.title }}</a>
+          </div>
+          <div class="li-actions">
+            <!-- edit -->
+            <a href="{{ url_for('main.edit_task', task_id=task.id) }}" class="edit-btn" title="Edit">Edit</a>
+            <!-- remove (no inline js) -->
+            <a href="#" class="remove-btn" data-task-id="{{ task.id }}" title="Remove">Delete</a>
+          </div>
+        </li>
       {% endfor %}
     </ul>
   </div>
 
-  <script src="todo-script.js"></script>
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='todo.js') }}"></script>
+  <script>
+    document.getElementById('task-list').addEventListener('click', (e) => {
+      const btn = e.target.closest('.remove-btn');
+      if (!btn) return;
+      e.preventDefault();
+      const id = btn.dataset.taskId;
+      fetch(`/remove/${id}`).then((res) => {
+        if (res.ok) location.reload();
+      });
+    });
+  </script>
 </body>
 </html>

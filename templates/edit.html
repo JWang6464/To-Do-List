@@ -9,14 +9,19 @@
 <body>
   <div class="container">
     <h3>Edit Task</h3>
+
     <form method="POST">
       <div class="input-section">
-        <input type="text" name="task-text" value="{{ task['text'] }}" />
-        <select name="task-priority" class="priority-select">
-          <option value="low" {{ 'selected' if task.get('priority', 'low') == 'low' else '' }}>Low</option>
-          <option value="medium" {{ 'selected' if task.get('priority') == 'medium' else '' }}>Medium</option>
-          <option value="high" {{ 'selected' if task.get('priority') == 'high' else '' }}>High</option>
+        <!-- task title -->
+        <input type="text" name="task-text" value="{{ task.title }}" required />
+
+        <!-- priority: low / medium / high -->
+        <select name="priority" class="priority-select" aria-label="Priority">
+          <option value="low"    {% if task.priority=='low' %}selected{% endif %}>Low</option>
+          <option value="medium" {% if task.priority=='medium' %}selected{% endif %}>Medium</option>
+          <option value="high"   {% if task.priority=='high' %}selected{% endif %}>High</option>
         </select>
+
         <button type="submit">Save</button>
       </div>
     </form>
